@@ -1,0 +1,23 @@
+{
+  "name": "employee-management",
+  "version": "1.0.0",
+  "description": "Node app for viewing and managing employees",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmcdonald112358/employee-management.git"
+  },
+  "author": "Justin McDonald",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmcdonald112358/employee-management/issues"
+  },
+  "homepage": "https://github.com/jmcdonald112358/employee-management#readme",
+  "dependencies": {
+    "inquirer": "^8.0.0",
+    "mysql": "^2.18.1"
+  }
+}
