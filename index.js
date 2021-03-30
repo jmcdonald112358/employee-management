@@ -33,24 +33,24 @@ const questions = {
       message: 'What data would you like to view?',
       choices: ['Employees', 'Roles', 'Departments', 'Employees by manager', 'Budget by department']
    }],
-   // {
-   //    type: 'list',
-   //    name: 'additions',
-   //    message: 'What data would you like to add?',
-   //    choices: ['New employee', 'New role', 'New department']
-   // },
-   // {
-   //    type: 'list',
-   //    name: 'updates',
-   //    message: 'What data would you like to update?',
-   //    choices: ['Employee role', 'Employee manager', 'Department name']
-   // },
-   // {
-   //    type: 'list',
-   //    name: 'deletions',
-   //    message: 'What data would you like to delete?',
-   //    choices: ['An employee', 'A role', 'A department']
-   // },
+   additions: [{
+      type: 'list',
+      name: 'additions',
+      message: 'What data would you like to add?',
+      choices: ['New employee', 'New role', 'New department']
+   }],
+   updates: [{
+      type: 'list',
+      name: 'updates',
+      message: 'What data would you like to update?',
+      choices: ['Employee role', 'Employee manager', 'Department name']
+   }],
+   deletions: [{
+      type: 'list',
+      name: 'deletions',
+      message: 'What data would you like to delete?',
+      choices: ['An employee', 'A role', 'A department']
+   }],
    do_more: [{
       type: 'confirm',
       name: 'do_more',
@@ -70,7 +70,6 @@ async function doMore() {
    };
 };
 
-
 async function start() {
    console.log(`
    .----------------------------------------------.
@@ -82,16 +81,16 @@ async function start() {
    const { actions } = await inquirer.prompt(questions.actions);
 
    //Call handler classes
-   const create = new Create;
-   const query = new Query;
+   const query = new Query; //Used in 'view data' switch case
+   const create = new Create; //Used in 'add data' switch case
    const update = new Update;
    const remove = new Delete;
 
-   console.log(actions);
    switch (actions) {
       case 'View data':
-         let {queries} = await inquirer.prompt(questions.queries);
+         let { queries } = await inquirer.prompt(questions.queries);
 
+         console.log('You selected: ' + queries);
          if (queries === 'Employees'){
             query.readEmployees(connection, doMore);
          }
@@ -109,49 +108,51 @@ async function start() {
          }
          break;
       case 'Add data':
-         let addData = inquirer.prompt(questions.additions);
+         let { additions } = await inquirer.prompt(questions.additions);
 
-         if (addData === 'New employee'){
+         console.log('You selected: ' + additions);
+         if (additions === 'New employee'){
             create.newEmployee(connection, doMore);
          }
-         else if (addData === 'New role'){
+         else if (additions === 'New role'){
             create.newRole(connection, doMore);
          }
-         else if (addData === 'New department'){
+         else if (additions === 'New department'){
             create.newDepartment(connection, doMore);
          }
          break;
       case 'Change data':
-         let changeData = inquirer.prompt(questions.updates);
+         let { updates } = await inquirer.prompt(questions.updates);
 
-         if (changeData === 'Employee role'){
+         console.log('You selected: ' + updates);
+         if (updates === 'Employee role'){
             update.employeeRole(connection, doMore);
          }
-         else if (changeData === 'Employee manager'){
+         else if (updates === 'Employee manager'){
             update.employeeManager(connection, doMore);
          }
-         else if (changeData === 'Department name'){
+         else if (updates === 'Department name'){
             update.deptName(connection, doMore);
          }
          break;
       case 'Delete data':
-         let deleteData = inquirer.prompt(questions.deletions);
+         let deletions = inquirer.prompt(questions.deletions);
 
-         if (deleteData === 'An employee'){
-
+         console.log('You selected: ' + deletions);
+         if (deletions === 'An employee'){
+            remove.employee(connection, doMore);
          }
-         else if (deleteData === 'A role'){
-
+         else if (deletions === 'A role'){
+            remove.role(connection, doMore);
          }
-         else if (deleteData === 'A department'){
-
+         else if (deletions === 'A department'){
+            remove.department(connection, doMore);
          }
          break;
       case 'Exit application':
          connection.end();
          break;
    }
-   
 };
 
 //Initialize app
