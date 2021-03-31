@@ -136,7 +136,7 @@ async function start() {
          }
          break;
       case 'Delete data':
-         let deletions = inquirer.prompt(questions.deletions);
+         let deletions = await inquirer.prompt(questions.deletions);
 
          console.log('You selected: ' + deletions);
          if (deletions === 'An employee'){
