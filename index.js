@@ -1,11 +1,6 @@
-// This file contains the code for initializing the app and connecting to the DB (I think... should the DB connection be in another file?)
-
-//Need a folder for classes/constructors, problably, with separate files for each employee class, just like the Employee Profile Generator
-
 //Call dependencies
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-// const { async } = require('rxjs');
 const Query = require('./lib/Query');
 const Create = require('./lib/Create');
 const Update = require('./lib/Update');
@@ -20,6 +15,7 @@ const connection = mysql.createConnection({
    database: 'employee_mgmtDB'
 });
 
+//Define questions for inquirer prompts
 const questions = {
    actions: [{
       type: 'list',
@@ -136,7 +132,7 @@ async function start() {
          }
          break;
       case 'Delete data':
-         let deletions = await inquirer.prompt(questions.deletions);
+         let { deletions } = await inquirer.prompt(questions.deletions);
 
          console.log('You selected: ' + deletions);
          if (deletions === 'An employee'){
